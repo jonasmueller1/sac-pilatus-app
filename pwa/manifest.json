@@ -1,0 +1,69 @@
+{
+    "short_name": "SAC Pilatus",
+    "name": "SAC Pilatus App",
+    "description": "App der Sektion Pilatus des Schweizer Alpen-Club",
+    "icons": [
+      {
+        "src": "/files/favicon/favicon-196x196.png",
+        "type": "image/png",
+        "sizes": "196x196"
+      },
+      {
+        "src": "/files/favicon/favicon-96x96.png",
+        "type": "image/png",
+        "sizes": "96x96"
+      },
+      {
+        "src": "/files/favicon/favicon-32x32.png",
+        "type": "image/png",
+        "sizes": "32x32"
+      },    
+      {
+        "src": "/files/favicon/favicon-16x16.png",
+        "type": "image/png",
+        "sizes": "16x16"
+      }
+    ],
+    "start_url": "/files/app/app.html",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/files/app/",
+    "theme_color": "#be0b15",
+    "shortcuts": [
+      {
+        "name": "Home",
+        "short_name": "Home",
+        "description": "Startseite SAC Pilatus",
+        "url": "/files/app/home.html",
+        "icons": [{ "src": "/files/favicon/favicon-196x196.png", "sizes": "196x196" }]
+      },
+      {
+        "name": "Touren, Trainings und Anlässe",
+        "short_name": "Touren",
+        "description": "Tourenprogramm",
+        "url": "/files/app/touren-trainings-und-anlaesse.html",
+        "icons": [{ "src": "/files/favicon/favicon-196x196.png", "sizes": "196x196" }]
+      },
+      {
+        "name": "Kurse",
+        "short_name": "Kurse",
+        "description": "Kursprogramm",
+        "url": "/files/app/kurse.html",
+        "icons": [{ "src": "/files/favicon/favicon-196x196.png", "sizes": "196x196" }]
+      },
+      {
+        "name": "Nachrichten",
+        "short_name": "News",
+        "description": "Nachrichten der Sektion Pilatus",
+        "url": "/files/app/service/nachrichten.html",
+        "icons": [{ "src": "/files/favicon/favicon-196x196.png", "sizes": "196x196" }]
+      },
+      {
+        "name": "Mitglieder-Login",
+        "short_name": "Login",
+        "description": "Mitglieder-Login der Sektion Pilatus",
+        "url": "/files/app/member-login.html",
+        "icons": [{ "src": "/files/favicon/favicon-196x196.png", "sizes": "196x196" }]
+      }      
+    ]
+  }
