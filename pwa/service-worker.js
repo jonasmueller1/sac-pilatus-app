@@ -1,6 +1,9 @@
 // Files to cache
 const cacheName = 'pilatus-pwa-v0.0.1';
 const appShellFiles = [
+  '/files/app/app.js',
+  '/files/app/manifest.json',
+  '/files/app/home.html',
   '/files/app/app.html',
   '/favicon.ico',
   '/files/favicon/favicon-196x196.png',

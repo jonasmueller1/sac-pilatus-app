@@ -39,6 +39,11 @@ Add input botton `A2HS` (add to home screen) on your installation page (or on ev
 </button>
 ```
 
+Add notification button on a page:
+```
+<button id="notifications">Notifikationen erlauben und starten</button>
+```
+
 ## More Examples:
-- https://github.com/mdn/pwa-examples/tree/master/js13kpwa/data
+- https://github.com/mdn/pwa-examples/tree/master/js13kpwa
 - https://github.com/GoogleChrome/samples/tree/gh-pages/service-worker
