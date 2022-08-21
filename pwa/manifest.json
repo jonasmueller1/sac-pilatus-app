@@ -24,7 +24,7 @@
         "sizes": "16x16"
       }
     ],
-    "start_url": "/files/app/home.html?version=1",
+    "start_url": "/files/app/home.html?version=0.1",
     "background_color": "#ffffff",
     "display": "standalone",
     "scope": "/files/app/",

@@ -1,5 +1,5 @@
 // Files to cache
-const cacheName = 'pilatus-pwa-v0.0.1';
+const cacheName = 'pilatus-pwa-v0.1'; // A change forces an update
 const appShellFiles = [
   '/files/app/app.js',
   '/files/app/manifest.json',
@@ -42,6 +42,7 @@ self.addEventListener('fetch', (e) => {
 
 // Clearing cache
 self.addEventListener('activate', (e) => {
+  console.log('[Service Worker] Activate');
   e.waitUntil(caches.keys().then((keyList) => {
     return Promise.all(keyList.map((key) => {
       if (key === cacheName) { return; }
@@ -50,8 +51,17 @@ self.addEventListener('activate', (e) => {
   }));
 });
 
+// Skip waiting for updating it
+self.addEventListener('message', (event) => {
+  console.log('[Service Worker] Message: ', event.data);
+  if (event.data === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+// Notification data
 self.addEventListener('notificationclick', function(event) {
-  console.log('On notification click: ', event.notification.data);
+  console.log('[Service Worker] Notification click: ', event.notification.data);
   const nUrl = event.notification.data.url;
   event.notification.close();
   // Open the app and navigate to url after clicking the notification

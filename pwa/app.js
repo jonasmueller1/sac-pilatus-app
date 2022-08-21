@@ -11,11 +11,45 @@ function initializeApp() {
       navigator.serviceWorker.register('/files/app/service-worker.js') // Note: Service worker has to be located in root folder of app!
         .then(registration => {
           console.log('Service Worker is registered', registration);
-          setInterval(() => registration.update(), 60 * 60 * 1000);
           swRegistration = registration;
+
+          setInterval(() => registration.update(), 60 * 60 * 1000);
+
+          if (swRegistration.waiting) {
+            invokeServiceWorkerUpdateFlow(swRegistration)
+          }
+
+          // Detect Service Worker update available and install it
+          swRegistration.addEventListener('updatefound', () => {
+            console.log('Service Worker update found', swRegistration);
+            if (swRegistration.installing) {
+              // Wait until the new Service worker is actually installed (ready to take over)
+              swRegistration.installing.addEventListener('statechange', () => {
+                  if (swRegistration.waiting) {
+                    // Check if an existing controller (previous Service Worker)
+                    if (navigator.serviceWorker.controller) {
+                      invokeServiceWorkerUpdateFlow(swRegistration)
+                    } else {
+                      console.log('Service Worker initialized for the first time')
+                      // Nothing to do
+                    }
+                  }
+                })
+            }
+          })
+
+          // Detect controller change and refresh the page
+          let refreshing = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            console.log('Service Worker refresh');
+            if (!refreshing) {
+              window.location.reload()
+              refreshing = true
+            }
+          })
         })
         .catch(error => {
-          console.error('Service Worker Error', error);
+          console.error('Service Worker error', error);
         })
   } else {
     console.warn('Push messaging is not supported');
@@ -55,6 +89,15 @@ if (!!addButton) {
   });
 }
 
+// Handle waiting service worker
+function invokeServiceWorkerUpdateFlow(registration) {
+  console.log('Service Worker update flow', registration);
+  if (registration.waiting) {
+    // let waiting Service Worker know it should became active
+    registration.waiting.postMessage('SKIP_WAITING')
+  }
+}
+
 // Requesting permission for Notifications after clicking on the button
 const notifyButton = document.getElementById('notifications');
 if (!!notifyButton) {
@@ -71,7 +114,7 @@ if (!!notifyButton) {
 function randomNotification() {
   const notifDate = new Date().toDateString();
   const notifTime = new Date().getHours() + ':' + new Date().getMinutes();
-  const notifTitle = 'Neue Notifikation am ' + notifDate + ' ' + notifTime + '';
+  const notifTitle = 'Neue Nachricht am ' + notifDate + ' ' + notifTime + '';
   const notifBody = `Erstellt von Jonas Müller`;
   const notifImg = `/files/favicon/favicon-96x96.png`;
   const options = {
