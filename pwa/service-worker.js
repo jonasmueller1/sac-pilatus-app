@@ -51,6 +51,13 @@ self.addEventListener('activate', (e) => {
   }));
 });
 
+// Listen the periodic background sync events to update the cached resources.
+self.addEventListener('periodicsync', event => {
+  if (event.tag === 'update-cached-content') {
+    // event.waitUntil(updateCachedContent());
+  }
+});
+
 // Skip waiting for updating it
 self.addEventListener('message', (event) => {
   console.log('[Service Worker] Message: ', event.data);

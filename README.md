@@ -47,3 +47,4 @@ Add notification button on a page:
 ## More Examples:
 - https://github.com/mdn/pwa-examples/tree/master/js13kpwa
 - https://github.com/GoogleChrome/samples/tree/gh-pages/service-worker
+- https://docs.microsoft.com/en-us/microsoft-edge/progressive-web-apps-chromium/demo-pwas

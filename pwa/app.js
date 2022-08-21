@@ -8,52 +8,64 @@ function initializeApp() {
   // Registering Service Worker
   if ('serviceWorker' in navigator && 'PushManager' in window) {
     console.log('Service Worker and Push is supported');
-      navigator.serviceWorker.register('/files/app/service-worker.js') // Note: Service worker has to be located in root folder of app!
-        .then(registration => {
-          console.log('Service Worker is registered', registration);
-          swRegistration = registration;
+    navigator.serviceWorker.register('/files/app/service-worker.js') // Note: Service worker has to be located in root folder of app!
+      .then(registration => {
+        console.log('Service Worker is registered', registration);
+        swRegistration = registration;
 
-          setInterval(() => registration.update(), 60 * 60 * 1000);
+        // Handle Service Worker update
+        navigator.serviceWorker.ready.then((registration) => {
+          console.log('Service Worker update');
+          swRegistration.update();
+        });
 
-          if (swRegistration.waiting) {
-            invokeServiceWorkerUpdateFlow(swRegistration)
-          }
+        // Set interval for Service Worker update
+        setInterval(() => {
+          console.log('Service Worker interval update');
+          swRegistration.update();
+        }, 60 * 60 * 1000); // Every hour
 
-          // Detect Service Worker update available and install it
-          swRegistration.addEventListener('updatefound', () => {
-            console.log('Service Worker update found', swRegistration);
-            if (swRegistration.installing) {
-              // Wait until the new Service worker is actually installed (ready to take over)
-              swRegistration.installing.addEventListener('statechange', () => {
-                  if (swRegistration.waiting) {
-                    // Check if an existing controller (previous Service Worker)
-                    if (navigator.serviceWorker.controller) {
-                      invokeServiceWorkerUpdateFlow(swRegistration)
-                    } else {
-                      console.log('Service Worker initialized for the first time')
-                      // Nothing to do
-                    }
+        if (swRegistration.waiting) {
+          invokeServiceWorkerUpdateFlow(swRegistration)
+        }
+
+        // Detect Service Worker update available and install it
+        swRegistration.addEventListener('updatefound', () => {
+          console.log('Service Worker update found', swRegistration);
+          if (swRegistration.installing) {
+            // Wait until the new Service worker is actually installed (ready to take over)
+            swRegistration.installing.addEventListener('statechange', () => {
+                if (swRegistration.waiting) {
+                  // Check if an existing controller (previous Service Worker)
+                  if (navigator.serviceWorker.controller) {
+                    invokeServiceWorkerUpdateFlow(swRegistration)
+                  } else {
+                    console.log('Service Worker initialized for the first time')
+                    // Nothing to do
                   }
-                })
-            }
-          })
+                }
+              })
+          }
+        })
 
-          // Detect controller change and refresh the page
-          let refreshing = false;
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
-            console.log('Service Worker refresh');
-            if (!refreshing) {
-              window.location.reload()
-              refreshing = true
-            }
-          })
+        // Detect controller change and refresh the page
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          console.log('Service Worker refresh');
+          if (!refreshing) {
+            window.location.reload()
+            refreshing = true
+          }
         })
-        .catch(error => {
-          console.error('Service Worker error', error);
-        })
+
+      })
+      .catch(error => {
+        console.error('Service Worker error', error);
+      })
+
   } else {
-    console.warn('Push messaging is not supported');
-    notificationButton.textContent = 'Push is not supported';
+    console.warn('Service Worker and Push messaging is not supported');
+    notificationButton.textContent = 'Push-Nachrichten sind nicht unterstützt!';
   }
 }
 
