@@ -5,6 +5,7 @@ const appShellFiles = [
   '/files/app/manifest.json',
   '/files/app/home.html',
   '/files/app/app.html',
+  '/files/app/service/nachrichten.html',
   '/favicon.ico',
   '/files/favicon/favicon-196x196.png',
   '/files/favicon/favicon-96x96.png',
@@ -47,4 +48,24 @@ self.addEventListener('activate', (e) => {
       return caches.delete(key);
     }))
   }));
+});
+
+self.addEventListener('notificationclick', function(event) {
+  console.log('On notification click: ', event.notification.data);
+  const nUrl = event.notification.data.url;
+  event.notification.close();
+  // Open the app and navigate to url after clicking the notification
+  if (clients.openWindow && nUrl) {
+    // Enumerate windows, and call window.focus(), or open a new one.
+    event.waitUntil(
+      clients.matchAll().then(matchedClients => {
+        for (let client of matchedClients) {
+          if (client.url === nUrl) {
+            return client.focus();
+          }
+        }
+        return clients.openWindow(nUrl);
+      })
+    );
+  }
 });

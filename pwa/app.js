@@ -71,12 +71,15 @@ if (!!notifyButton) {
 function randomNotification() {
   const notifDate = new Date().toDateString();
   const notifTime = new Date().getHours() + ':' + new Date().getMinutes();
-  const notifTitle = 'Notifikation am ' + notifDate + ' ' + notifTime + '';
+  const notifTitle = 'Neue Notifikation am ' + notifDate + ' ' + notifTime + '';
   const notifBody = `Erstellt von Jonas Müller`;
   const notifImg = `/files/favicon/favicon-96x96.png`;
   const options = {
     body: notifBody,
     icon: notifImg,
+    data: {
+      url: '/files/app/service/nachrichten.html',
+    },
   };
   // new Notification(notifTitle, options);
   swRegistration.showNotification(notifTitle, options);
