@@ -1,18 +1,16 @@
 // Files to cache
-const cacheName = 'pilatus-pwa-v0.1'; // A change forces an update
+const cacheName = 'pilatus-pwa-v0.2'; // A change forces an update
 const appShellFiles = [
-  '/files/app/app.js',
-  '/files/app/manifest.json',
-  '/files/app/home.html',
+  '/app.js',
+  '/manifest.json',
+  // '/home.html',
   '/files/app/app.html',
-  '/files/app/service/nachrichten.html',
   '/favicon.ico',
   '/files/favicon/favicon-196x196.png',
   '/files/favicon/favicon-96x96.png',
   '/files/favicon/favicon-32x32.png',
   '/files/favicon/favicon-16x16.png',
   '/files/favicon/favicon-128.png',
-  // TODO: Add more pages or files
 ];
 const contentToCache = appShellFiles;
 

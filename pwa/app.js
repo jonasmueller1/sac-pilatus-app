@@ -8,7 +8,7 @@ function initializeApp() {
   // Registering Service Worker
   if ('serviceWorker' in navigator && 'PushManager' in window) {
     console.log('Service Worker and Push is supported');
-    navigator.serviceWorker.register('/files/app/service-worker.js') // Note: Service worker has to be located in root folder of app!
+    navigator.serviceWorker.register('/service-worker.js') // Note: Service worker has to be located in root folder of app!
       .then(registration => {
         console.log('Service Worker is registered', registration);
         swRegistration = registration;
