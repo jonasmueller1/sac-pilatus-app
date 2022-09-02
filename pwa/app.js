@@ -1,3 +1,7 @@
+/*
+ Copyright 2022 Jonas Müller. All Rights Reserved.
+ */
+
 let swRegistration = null;
 
 window.addEventListener('load', function() {   
@@ -84,7 +88,7 @@ if (!!addButton) {
     addButton.style.display = 'block';
 
     addButton.addEventListener('click', () => {
-      // hide our user interface that shows our A2HS button
+      // Hide our user interface that shows our A2HS button
       addButton.style.display = 'none';
       // Show the prompt
       deferredPrompt.prompt();
@@ -105,7 +109,7 @@ if (!!addButton) {
 function invokeServiceWorkerUpdateFlow(registration) {
   console.log('Service Worker update flow', registration);
   if (registration.waiting) {
-    // let waiting Service Worker know it should became active
+    // Let waiting Service Worker know it should became active
     registration.waiting.postMessage('SKIP_WAITING')
   }
 }

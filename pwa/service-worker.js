@@ -1,18 +1,35 @@
-// Files to cache
-const cacheName = 'pilatus-pwa-v0.2'; // A change forces an update
-const appShellFiles = [
+/*
+ Copyright 2022 Jonas Müller. All Rights Reserved.
+ */
+
+const cacheName = 'app-version-0.1.0'; // A change forces an update of its cached files
+// Local URIs we always want to be cached
+const contentToCache = [
+  // Basic app content:
   '/app.js',
   '/manifest.json',
-  // '/home.html',
-  '/files/app/app.html',
+  '/files/app/home.html',
+  // '/files/app/app.html',
+  // App images:
   '/favicon.ico',
   '/files/favicon/favicon-196x196.png',
   '/files/favicon/favicon-96x96.png',
   '/files/favicon/favicon-32x32.png',
   '/files/favicon/favicon-16x16.png',
   '/files/favicon/favicon-128.png',
+  '/bundles/markocupicswissalpineclubcontaologinclient/img/logo_sac_small.svg',
+  // Big files (only with hash in file name) to optimize bandwidth:
+  '/files/theme-sac-pilatus/images/logos/logo-header.svg',
+  '/assets/images/6/Urbachtal-ea756110.jpg',
+  '/assets/images/f/Galtigengrat-528b6ec6.jpg',
+  '/assets/images/6/005-81a10e4c.jpg',
+  '/assets/js/jquery.min.js,ce_servicelink.min.js,Sortable.min.js,jquery.touch...-151f2389.js',
+  '/assets/js/jquery.min.js,ce_servicelink.min.js,Sortable.min.js,jquery.touch...-3b345980.js',
+  '/assets/css/fineuploader.min.css,cookieconsent.min.css,glightbox.min.css,sac...-2e94f060.css',
+  // No explicit caching of pages to enforce up-to-date content:
+  // '/home.html',  
+  // './',
 ];
-const contentToCache = appShellFiles;
 
 // Installing Service Worker
 self.addEventListener('install', (e) => {
@@ -25,17 +42,53 @@ self.addEventListener('install', (e) => {
 });
 
 // Fetching content using Service Worker
-self.addEventListener('fetch', (e) => {
-  e.respondWith((async () => {
-    const r = await caches.match(e.request);
-    console.log(`[Service Worker] Fetching resource: ${e.request.url}`);
-    if (r) return r;
-    const response = await fetch(e.request);
-    const cache = await caches.open(cacheName);
-    console.log(`[Service Worker] Caching new resource: ${e.request.url}`);
-    cache.put(e.request, response.clone());
-    return response;
-  })());
+self.addEventListener('fetch', function(event) {
+  // Skip cross-origin requests
+  //if (event.request.url.startsWith(self.location.origin)) {
+    event.respondWith(
+      caches.match(event.request)
+      .then(function(response) {
+          console.log(`[Service Worker] Fetching resource: ${event.request.url}`);
+          // Check if current http request matches cached data
+          if (response) {
+            // Return only cached content if it is defined
+            if (contentToCache.includes(event.request.url)) {
+              return response;
+            }
+          }
+
+          console.log(`[Service Worker] Caching new resource: ${event.request.url}`);
+          var requestToCache = event.request.clone();
+
+          // Try to make original http request
+          return fetch(requestToCache).then(
+            function(response) {
+              // Return server error immediately
+              if (!response || response.status !== 200) {
+                return response;
+              }
+
+              console.log(`[Service Worker] Adding new resource: ${event.request.url}`);
+              var responseToCache = response.clone();
+              caches.open(cacheName)
+                .then(function(cache) {
+                  // Add response to cache
+                  cache.put(requestToCache, responseToCache);
+                });
+
+              return response;
+            }
+          );
+        }).catch(function(err) {
+          console.log(`[Service Worker] Error: Fetch failed for resource: ${event.request.url}`);
+          // If the network is unavailable to make a request, open cached page
+          offlinePage = caches.match(event.request.url)
+          console.log(`[Service Worker] Fetching cached resource: ${event.request.url}`);
+          return offlinePage
+          // return caches.match('/home.html');
+        })
+      );
+  //}
 });
 
 // Clearing cache
