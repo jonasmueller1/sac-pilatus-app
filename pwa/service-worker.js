@@ -3,7 +3,8 @@
  */
 
 const cacheName = 'app-version-0.1.0'; // A change forces an update of its cached files
-// Local URIs we always want to be cached
+
+// Local URIs we always want to be cached (links must be always valid)
 const contentToCache = [
   // Basic app content:
   '/app.js',
@@ -17,15 +18,12 @@ const contentToCache = [
   '/files/favicon/favicon-32x32.png',
   '/files/favicon/favicon-16x16.png',
   '/files/favicon/favicon-128.png',
-  '/bundles/markocupicswissalpineclubcontaologinclient/img/logo_sac_small.svg',
-  // Big files (only with hash in file name) to optimize bandwidth:
   '/files/theme-sac-pilatus/images/logos/logo-header.svg',
+  '/bundles/markocupicswissalpineclubcontaologinclient/img/logo_sac_small.svg',
+  // Big images (with hash in file name) to optimize bandwidth:
   '/assets/images/6/Urbachtal-ea756110.jpg',
   '/assets/images/f/Galtigengrat-528b6ec6.jpg',
   '/assets/images/6/005-81a10e4c.jpg',
-  '/assets/js/jquery.min.js,ce_servicelink.min.js,Sortable.min.js,jquery.touch...-151f2389.js',
-  '/assets/js/jquery.min.js,ce_servicelink.min.js,Sortable.min.js,jquery.touch...-3b345980.js',
-  '/assets/css/fineuploader.min.css,cookieconsent.min.css,glightbox.min.css,sac...-2e94f060.css',
   // No explicit caching of pages to enforce up-to-date content:
   // '/home.html',  
   // './',
@@ -36,8 +34,12 @@ self.addEventListener('install', (e) => {
   console.log('[Service Worker] Install');
   e.waitUntil((async () => {
     const cache = await caches.open(cacheName);
-    console.log('[Service Worker] Caching all: app shell and content');
-    await cache.addAll(contentToCache);
+    console.log('[Service Worker] Caching all: app content');
+    try {
+      await cache.addAll(contentToCache);
+    } catch(e) {
+      console.error('[Service Worker] Error: App content failed to cache!');
+    }
   })());
 });
 
@@ -80,7 +82,7 @@ self.addEventListener('fetch', function(event) {
             }
           );
         }).catch(function(err) {
-          console.log(`[Service Worker] Error: Fetch failed for resource: ${event.request.url}`);
+          console.error(`[Service Worker] Error: Fetch failed for resource: ${event.request.url}`);
           // If the network is unavailable to make a request, open cached page
           offlinePage = caches.match(event.request.url)
           console.log(`[Service Worker] Fetching cached resource: ${event.request.url}`);
