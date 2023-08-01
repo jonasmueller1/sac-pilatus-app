@@ -12,6 +12,12 @@ const contentToCache = [
   '/files/app/home.html',
   // '/files/app/app.html',
   // App images:
+  '/files/app/app-icon-1024x1024.png',
+  '/files/app/app-icon-196x196.png',
+  '/files/app/app-icon-96x96.png',
+  '/files/app/app-icon-32x32.png',
+  '/files/app/app-icon-16x16.png',
+  // Website images:
   '/favicon.ico',
   '/files/favicon/favicon-196x196.png',
   '/files/favicon/favicon-96x96.png',
