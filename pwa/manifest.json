@@ -29,7 +29,7 @@
       "sizes": "16x16"
     }
   ],
-  "start_url": "/files/app/home.html",
+  "start_url": "/home.html",
   "background_color": "#eb1e26",
   "display": "standalone",
   "scope": "/",

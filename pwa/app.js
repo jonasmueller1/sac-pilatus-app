@@ -1,5 +1,5 @@
 /*
- Copyright 2022 Jonas Müller. All Rights Reserved.
+ Copyright 2023 Jonas Müller (SAC Section Pilatus). All Rights Reserved.
  */
 
 let swRegistration = null;

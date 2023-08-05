@@ -1,16 +1,14 @@
 /*
- Copyright 2022 Jonas Müller. All Rights Reserved.
+ Copyright 2023 Jonas Müller (SAC Section Pilatus). All Rights Reserved.
  */
 
-const cacheName = 'app-version-0.1.0'; // A change forces an update of its cached files
+const cacheName = 'app-version-0.2.0'; // A change forces an update of its cached files
 
 // Local URIs we always want to be cached (links must be always valid)
 const contentToCache = [
   // Basic app content:
   '/app.js',
   '/manifest.json',
-  '/files/app/home.html',
-  // '/files/app/app.html',
   // App images:
   '/files/app/app-icon-1024x1024.png',
   '/files/app/app-icon-196x196.png',
