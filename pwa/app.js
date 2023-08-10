@@ -132,7 +132,7 @@ if (!!notifyButton) {
 //   const notifTime = new Date().getHours() + ':' + new Date().getMinutes();
 //   const notifTitle = 'Neue Nachricht am ' + notifDate + ' ' + notifTime + '';
 //   const notifBody = `Erstellt von Jonas Müller`;
-//   const notifImg = `/files/app/app-icon-96x96.png`;
+//   const notifImg = `/files/favicon/app-icon-96x96.png`;
 //   const options = {
 //     body: notifBody,
 //     icon: notifImg,

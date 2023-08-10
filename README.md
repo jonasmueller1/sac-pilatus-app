@@ -35,7 +35,7 @@ Add input botton `A2HS` (add to home screen) on your installation page (or on ev
 
 ```
 <button class="add-button" style="color: #ffffff; font-weight: bold; background-color: #026ca0; position: fixed; left: 10px; bottom: 30px; transform: translate(10px, -50%); margin: 0 auto;">
-  <img src="/files/favicon/favicon-16x16.png"> SAC Pilatus App installieren ▼
+  <img src="/files/favicon/app-icon-16x16.png"> SAC Pilatus App installieren ▼
 </button>
 ```
 

@@ -8,13 +8,12 @@ const cacheName = 'app-version-0.2.0'; // A change forces an update of its cache
 const contentToCache = [
   // Basic app content:
   '/app.js',
-  '/manifest.json',
   // App images:
-  '/files/app/app-icon-1024x1024.png',
-  '/files/app/app-icon-196x196.png',
-  '/files/app/app-icon-96x96.png',
-  '/files/app/app-icon-32x32.png',
-  '/files/app/app-icon-16x16.png',
+  '/files/favicon/app-icon-1024x1024.png',
+  '/files/favicon/app-icon-196x196.png',
+  '/files/favicon/app-icon-96x96.png',
+  '/files/favicon/app-icon-32x32.png',
+  '/files/favicon/app-icon-16x16.png',
   // Website images:
   '/favicon.ico',
   '/files/favicon/favicon-196x196.png',
@@ -23,7 +22,6 @@ const contentToCache = [
   '/files/favicon/favicon-16x16.png',
   '/files/favicon/favicon-128.png',
   '/files/theme-sac-pilatus/images/logos/logo-header.svg',
-  '/bundles/markocupicswissalpineclubcontaologinclient/img/logo_sac_small.svg',
   // Big images (with hash in file name) to optimize bandwidth:
   '/assets/images/6/Urbachtal-ea756110.jpg',
   '/assets/images/f/Galtigengrat-528b6ec6.jpg',
@@ -42,7 +40,7 @@ self.addEventListener('install', (e) => {
     try {
       await cache.addAll(contentToCache);
     } catch(e) {
-      console.error('[Service Worker] Error: App content failed to cache!');
+      console.warning('[Service Worker] Error: App content failed to cache!');
     }
   })());
 });
