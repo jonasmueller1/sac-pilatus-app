@@ -10,7 +10,7 @@
 
 ## Manifest
 
-Integrate this file in the root folder of app/website:
+Integrate this file in the `public` folder of app/website (`manifest.json` must be in root folder `/`):
 - [manifest.json](pwa/manifest.json)
 
 Include manifest in header (e.g. in template page 'fe_page_sac_pilatus.html5`:
@@ -21,7 +21,7 @@ Include manifest in header (e.g. in template page 'fe_page_sac_pilatus.html5`:
 
 ## Service Worker
 
-Integrate files in root folder (`service-worker.js` must be in root folder `/`):
+Integrate files in the `public` folder (`service-worker.js` must be in root folder `/`):
 - [service-worker.js](pwa/service-worker.js)
 - [app.js](pwa/app.js)
 
