@@ -13,10 +13,20 @@
 Integrate this file in the `public` folder of app/website (`manifest.json` must be in root folder `/`):
 - [manifest.json](pwa/manifest.json)
 
-Include manifest in header (e.g. in template page 'fe_page_sac_pilatus.html5`:
+Include manifest in header (e.g. in edit page page under `themes` --> `edit page layout` --> `expert settings`):
 
 ```
 <link rel="manifest" href="manifest.json">
+```
+
+Add the following lines for the splash screens on iOS there as well:
+
+```
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png">
+<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png" media="(device-width: 512px) and (device-height: 512px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png" media="(min-device-width: 512px) and (max-device-width: 512px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
 ```
 
 ## Service Worker
