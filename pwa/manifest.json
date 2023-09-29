@@ -4,29 +4,122 @@
   "description": "App der Sektion Pilatus des Schweizer Alpen-Club",
   "icons": [
     {
-      "src": "files/favicon/app-icon-1024x1024.png",
+      "src": "files/favicon/app-icon-512x512.png",
       "type": "image/png",
-      "sizes": "1024x1024"
+      "sizes": "512x512"
     },
     {
-      "src": "files/favicon/app-icon-196x196.png",
+      "src": "files/favicon/app-icon-192x192.png",
       "type": "image/png",
-      "sizes": "196x196"
+      "sizes": "192x192"
+    },
+	  {
+      "src": "files/favicon/app-icon-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
     },
     {
       "src": "files/favicon/app-icon-96x96.png",
       "type": "image/png",
       "sizes": "96x96"
     },
-    {
-      "src": "files/favicon/app-icon-32x32.png",
+	  {
+      "src": "files/favicon/app-icon-72x72.png",
       "type": "image/png",
-      "sizes": "32x32"
-    },    
+      "sizes": "72x72"
+    },
+	  {
+      "src": "files/favicon/app-icon-48x48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
     {
       "src": "files/favicon/app-icon-16x16.png",
-      "type": "image/png",
       "sizes": "16x16"
+    },
+    {
+      "src": "files/favicon/app-icon-20x20.png",
+      "sizes": "20x20"
+    },
+    {
+      "src": "files/favicon/app-icon-29x29.png",
+      "sizes": "29x29"
+    },
+    {
+      "src": "files/favicon/app-icon-32x32.png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "files/favicon/app-icon-40x40.png",
+      "sizes": "40x40"
+    },
+    {
+      "src": "files/favicon/app-icon-50x50.png",
+      "sizes": "50x50"
+    },
+    {
+      "src": "files/favicon/app-icon-57x57.png",
+      "sizes": "57x57"
+    },
+    {
+      "src": "files/favicon/app-icon-58x58.png",
+      "sizes": "58x58"
+    },
+    {
+      "src": "files/favicon/app-icon-60x60.png",
+      "sizes": "60x60"
+    },
+    {
+      "src": "files/favicon/app-icon-64x64.png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "files/favicon/app-icon-76x76.png",
+      "sizes": "76x76"
+    },
+    {
+      "src": "files/favicon/app-icon-80x80.png",
+      "sizes": "80x80"
+    },
+    {
+      "src": "files/favicon/app-icon-87x87.png",
+      "sizes": "87x87"
+    },
+    {
+      "src": "files/favicon/app-icon-100x100.png",
+      "sizes": "100x100"
+    },
+    {
+      "src": "files/favicon/app-icon-114x114.png",
+      "sizes": "114x114"
+    },
+    {
+      "src": "files/favicon/app-icon-120x120.png",
+      "sizes": "120x120"
+    },
+    {
+      "src": "files/favicon/app-icon-128x128.png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "files/favicon/app-icon-152x152.png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "files/favicon/app-icon-167x167.png",
+      "sizes": "167x167"
+    },
+    {
+      "src": "files/favicon/app-icon-180x180.png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "files/favicon/app-icon-256x256.png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "files/favicon/app-icon-1024x1024.png",
+      "sizes": "1024x1024"
     }
   ],
   "start_url": "home.html",
@@ -40,35 +133,35 @@
       "short_name": "Home",
       "description": "Startseite SAC Pilatus",
       "url": "home.html",
-      "icons": [{ "src": "files/favicon/app-icon-196x196.png", "sizes": "196x196" }]
+      "icons": [{ "src": "files/favicon/app-icon-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "Touren, Trainings und Anlässe",
       "short_name": "Touren",
       "description": "Tourenprogramm",
       "url": "touren-trainings-und-anlaesse.html",
-      "icons": [{ "src": "files/favicon/app-icon-196x196.png", "sizes": "196x196" }]
+      "icons": [{ "src": "files/favicon/app-icon-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "Kurse",
       "short_name": "Kurse",
       "description": "Kursprogramm",
       "url": "kurse.html",
-      "icons": [{ "src": "files/favicon/app-icon-196x196.png", "sizes": "196x196" }]
+      "icons": [{ "src": "files/favicon/app-icon-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "Nachrichten",
       "short_name": "News",
       "description": "Nachrichten der Sektion Pilatus",
       "url": "service/nachrichten.html",
-      "icons": [{ "src": "files/favicon/app-icon-196x196.png", "sizes": "196x196" }]
+      "icons": [{ "src": "files/favicon/app-icon-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "Mitglieder-Login",
       "short_name": "Login",
       "description": "Mitglieder-Login der Sektion Pilatus",
       "url": "member-login.html",
-      "icons": [{ "src": "files/favicon/app-icon-196x196.png", "sizes": "196x196" }]
+      "icons": [{ "src": "files/favicon/app-icon-192x192.png", "sizes": "192x192" }]
     }      
   ]
 }

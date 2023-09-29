@@ -2,16 +2,19 @@
  Copyright 2023 Jonas Mueller (SAC Section Pilatus). All Rights Reserved.
  */
 
-const cacheName = 'app-version-0.2.0'; // A change forces an update of its cached files
+const cacheName = 'app-version-0.2.2'; // A change forces an update of its cached files
 
 // Local URIs we always want to be cached (links must be always valid)
 const contentToCache = [
   // Basic app content:
   '/app.js',
   // App images:
-  '/files/favicon/app-icon-1024x1024.png',
-  '/files/favicon/app-icon-196x196.png',
+  '/files/favicon/app-icon-512x512.png',
+  '/files/favicon/app-icon-192x192.png',
+  '/files/favicon/app-icon-144x144.png',
   '/files/favicon/app-icon-96x96.png',
+  '/files/favicon/app-icon-72x72.png',
+  '/files/favicon/app-icon-48x48.png',
   '/files/favicon/app-icon-32x32.png',
   '/files/favicon/app-icon-16x16.png',
   // Website images:
