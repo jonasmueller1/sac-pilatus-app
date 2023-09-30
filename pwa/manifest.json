@@ -2,6 +2,16 @@
   "short_name": "SAC Pilatus",
   "name": "SAC Pilatus App",
   "description": "App der Sektion Pilatus des Schweizer Alpen-Club",
+  "start_url": "home.html",
+  "id": "/",
+  "scope": "/",
+  "theme_color": "#eb1e26",
+  "background_color": "#eb1e26",
+  "orientation": "any",
+  "display": "standalone",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "categories": ["sports"],
   "icons": [
     {
       "src": "files/favicon/app-icon-512x512.png",
@@ -11,7 +21,8 @@
     {
       "src": "files/favicon/app-icon-192x192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
 	  {
       "src": "files/favicon/app-icon-144x144.png",
@@ -35,98 +46,115 @@
     },
     {
       "src": "files/favicon/app-icon-16x16.png",
+      "type": "image/png",
       "sizes": "16x16"
     },
     {
       "src": "files/favicon/app-icon-20x20.png",
+      "type": "image/png",
       "sizes": "20x20"
     },
     {
       "src": "files/favicon/app-icon-29x29.png",
+      "type": "image/png",
       "sizes": "29x29"
     },
     {
       "src": "files/favicon/app-icon-32x32.png",
+      "type": "image/png",
       "sizes": "32x32"
     },
     {
       "src": "files/favicon/app-icon-40x40.png",
+      "type": "image/png",
       "sizes": "40x40"
     },
     {
       "src": "files/favicon/app-icon-50x50.png",
+      "type": "image/png",
       "sizes": "50x50"
     },
     {
       "src": "files/favicon/app-icon-57x57.png",
+      "type": "image/png",
       "sizes": "57x57"
     },
     {
       "src": "files/favicon/app-icon-58x58.png",
+      "type": "image/png",
       "sizes": "58x58"
     },
     {
       "src": "files/favicon/app-icon-60x60.png",
+      "type": "image/png",
       "sizes": "60x60"
     },
     {
       "src": "files/favicon/app-icon-64x64.png",
+      "type": "image/png",
       "sizes": "64x64"
     },
     {
       "src": "files/favicon/app-icon-76x76.png",
+      "type": "image/png",
       "sizes": "76x76"
     },
     {
       "src": "files/favicon/app-icon-80x80.png",
+      "type": "image/png",
       "sizes": "80x80"
     },
     {
       "src": "files/favicon/app-icon-87x87.png",
+      "type": "image/png",
       "sizes": "87x87"
     },
     {
       "src": "files/favicon/app-icon-100x100.png",
+      "type": "image/png",
       "sizes": "100x100"
     },
     {
       "src": "files/favicon/app-icon-114x114.png",
+      "type": "image/png",
       "sizes": "114x114"
     },
     {
       "src": "files/favicon/app-icon-120x120.png",
+      "type": "image/png",
       "sizes": "120x120"
     },
     {
       "src": "files/favicon/app-icon-128x128.png",
+      "type": "image/png",
       "sizes": "128x128"
     },
     {
       "src": "files/favicon/app-icon-152x152.png",
+      "type": "image/png",
       "sizes": "152x152"
     },
     {
       "src": "files/favicon/app-icon-167x167.png",
+      "type": "image/png",
       "sizes": "167x167"
     },
     {
       "src": "files/favicon/app-icon-180x180.png",
+      "type": "image/png",
       "sizes": "180x180"
     },
     {
       "src": "files/favicon/app-icon-256x256.png",
+      "type": "image/png",
       "sizes": "256x256"
     },
     {
       "src": "files/favicon/app-icon-1024x1024.png",
+      "type": "image/png",
       "sizes": "1024x1024"
     }
   ],
-  "start_url": "home.html",
-  "background_color": "#eb1e26",
-  "display": "standalone",
-  "scope": "/",
-  "theme_color": "#eb1e26",
   "shortcuts": [
     {
       "name": "Home",
@@ -155,13 +183,14 @@
       "description": "Nachrichten der Sektion Pilatus",
       "url": "service/nachrichten.html",
       "icons": [{ "src": "files/favicon/app-icon-192x192.png", "sizes": "192x192" }]
-    },
+    }    
+  ],
+  "screenshots" : [
     {
-      "name": "Mitglieder-Login",
-      "short_name": "Login",
-      "description": "Mitglieder-Login der Sektion Pilatus",
-      "url": "member-login.html",
-      "icons": [{ "src": "files/favicon/app-icon-192x192.png", "sizes": "192x192" }]
-    }      
+      "src": "files/favicon/app-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/jpng",
+      "platform": "any"
+    }
   ]
 }

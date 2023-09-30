@@ -23,11 +23,12 @@ Add the following lines for the splash screens on iOS there as well:
 
 ```
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="/files/favicon/app-icon-180x180.png">
-<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png">
-<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png" media="(device-width: 512px) and (device-height: 512px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png" media="(min-device-width: 512px) and (max-device-width: 512px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+<meta name="apple-mobile-web-app-title" content="SAC Pilatus App" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<link rel="apple-touch-icon" href="/files/favicon/app-icon-180x180.png" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png" media="(device-width: 512px) and (device-height: 512px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png" media="(min-device-width: 512px) and (max-device-width: 512px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" />
 ```
 
 ## Service Worker
@@ -63,7 +64,12 @@ Add notification button on a page:
 ## Further documentation:
 
 PWA:
+- https://docs.pwabuilder.com/#/builder/manifest
+- https://developer.mozilla.org/en-US/docs/Web/Manifest
 - https://livebook.manning.com/book/progressive-web-apps/chapter-1/
 
 Caching:
 - https://livebook.manning.com/book/progressive-web-apps/chapter-3/
+
+PWA in app stores:
+- https://docs.pwabuilder.com/#/builder/quick-start
