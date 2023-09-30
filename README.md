@@ -16,19 +16,28 @@ Integrate this file in the `public` folder of app/website (`manifest.json` must 
 Include manifest in header (e.g. in edit page page under `themes` --> `edit page layout` --> `expert settings`):
 
 ```
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json" />
 ```
 
-Add the following lines for the splash screens on iOS there as well:
+Add the following lines for the app icon and splash screens on iOS there as well:
 
 ```
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#eb1e26" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="SAC Pilatus App" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-touch-startup-image" content="/files/favicon/app-icon-1024x1024.png">
 <link rel="apple-touch-icon" href="/files/favicon/app-icon-180x180.png" />
-<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png" />
-<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png" media="(device-width: 512px) and (device-height: 512px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-<link rel="apple-touch-startup-image" href="/files/favicon/app-icon-1024x1024.png" media="(min-device-width: 512px) and (max-device-width: 512px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-splash-iphone6.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-splash-iphoneplus.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-splash-iphonex.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-splash-iphonexr.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-splash-iphonexsmax.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-splash-ipad.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-splash-ipadpro1.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-splash-ipadpro3.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" />
+<link rel="apple-touch-startup-image" href="/files/favicon/app-splash-ipadpro2.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" />
 ```
 
 ## Service Worker
@@ -70,6 +79,10 @@ PWA:
 
 Caching:
 - https://livebook.manning.com/book/progressive-web-apps/chapter-3/
+
+Image generators:
+- https://www.pwabuilder.com/
+- https://appsco.pe/developer/splash-screens
 
 PWA in app stores:
 - https://docs.pwabuilder.com/#/builder/quick-start
