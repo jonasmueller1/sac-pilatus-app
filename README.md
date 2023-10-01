@@ -25,10 +25,17 @@ Add the following lines for the app icon and splash screens on iOS there as well
 <meta name="theme-color" content="#eb1e26" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="SAC Pilatus App" />
+<meta name="apple-mobile-web-app-title" content="SAC Pilatus" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<meta name="apple-touch-startup-image" content="/files/favicon/app-icon-1024x1024.png">
+<meta name="apple-touch-startup-image" content="/files/favicon/app-icon-1024x1024.png" />
 <link rel="apple-touch-icon" href="/files/favicon/app-icon-180x180.png" />
+<link rel="apple-touch-icon" href="/files/favicon/app-icon-72x72.png" sizes="72x72" />
+<link rel="apple-touch-icon" href="/files/favicon/app-icon-96x96.png" sizes="96x96" />
+<link rel="apple-touch-icon" href="/files/favicon/app-icon-120x120.png" sizes="120x120" />
+<link rel="apple-touch-icon" href="/files/favicon/app-icon-152x152.png" sizes="152x152" />
+<link rel="apple-touch-icon" href="/files/favicon/app-icon-167x167.png" sizes="167x167" />
+<link rel="apple-touch-icon" href="/files/favicon/app-icon-180x180.png" sizes="180x180" />
+<link rel="apple-touch-icon" href="/files/favicon/app-icon-512x512.png" sizes="512x512" />
 <link rel="apple-touch-startup-image" href="/files/favicon/app-splash-iphone6.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" />
 <link rel="apple-touch-startup-image" href="/files/favicon/app-splash-iphoneplus.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" />
 <link rel="apple-touch-startup-image" href="/files/favicon/app-splash-iphonex.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
@@ -76,6 +83,7 @@ PWA:
 - https://docs.pwabuilder.com/#/builder/manifest
 - https://developer.mozilla.org/en-US/docs/Web/Manifest
 - https://livebook.manning.com/book/progressive-web-apps/chapter-1/
+- https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
 
 Caching:
 - https://livebook.manning.com/book/progressive-web-apps/chapter-3/
