@@ -85,6 +85,9 @@ PWA:
 - https://livebook.manning.com/book/progressive-web-apps/chapter-1/
 - https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
 
+PWA for non-compliant browsers:
+- https://github.com/GoogleChromeLabs/pwacompat/tree/master
+
 Caching:
 - https://livebook.manning.com/book/progressive-web-apps/chapter-3/
 
