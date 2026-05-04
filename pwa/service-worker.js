@@ -1,6 +1,7 @@
 /*
- Copyright 2023 Jonas Mueller (SAC Section Pilatus). All Rights Reserved.
- Updated 2024 with improved cache strategies for iOS, Android, and Windows.
+ Copyright 2023-2026 Jonas Mueller (SAC Section Pilatus). All Rights Reserved.
+ Updated 2026 with improved cache strategies for iOS, Android, and Windows.
+ Service Worker v0.3.0 - Full PWA support including Web Push notifications
  */
 
 const CACHE_VERSION = '0.3.0';
@@ -20,6 +21,7 @@ const STATIC_ASSETS = [
   '/files/favicon/app-icon-32x32.png',
   '/files/favicon/app-icon-16x16.png',
   '/favicon.ico'
+  // Note: Maskable icons (app-icon-*-maskable.png) can be added here once created
 ];
 
 /**
@@ -112,7 +114,7 @@ function networkFirstStrategy(request) {
   return fetch(request)
     .then((response) => {
       // Check if response is valid
-      if (!response || response.status !== 200 || response.type === 'error') {
+      if (!isValidResponse(response)) {
         return response;
       }
       
@@ -150,7 +152,7 @@ function cacheFirstStrategy(request) {
     return fetch(request)
       .then((response) => {
         // Don't cache invalid responses
-        if (!response || response.status !== 200) {
+        if (!isValidResponse(response)) {
           return response;
         }
         
@@ -181,7 +183,7 @@ function networkFirstWithTimeoutStrategy(request) {
     )
   ])
     .then((response) => {
-      if (!response || response.status !== 200) {
+      if (!isValidResponse(response)) {
         return response;
       }
       
@@ -206,7 +208,7 @@ function staleWhileRevalidateStrategy(request) {
   return caches.match(request).then((cached) => {
     // Return cached version immediately
     const fetchPromise = fetch(request).then((response) => {
-      if (!response || response.status !== 200) {
+      if (!isValidResponse(response)) {
         return response;
       }
       
@@ -222,6 +224,13 @@ function staleWhileRevalidateStrategy(request) {
     // Return cached or fetch in parallel
     return cached || fetchPromise;
   });
+}
+
+/**
+ * Check if response is valid (2xx or 3xx status)
+ */
+function isValidResponse(response) {
+  return response && (response.status >= 200 && response.status < 400);
 }
 
 /**
@@ -289,8 +298,7 @@ function updateCachedContent() {
   return caches.open(CACHE_NAME).then((cache) => {
     // Add URLs you want to periodically update
     const urlsToUpdate = [
-      '/home.html',
-      '/api/content'
+      '/home.html'
     ];
     
     return Promise.all(
@@ -332,5 +340,58 @@ self.addEventListener('notificationclick', (event) => {
       })
     );
   }
+});
+
+/**
+ * Handle push notifications (Web Push API)
+ * Supported on Android, Windows, and macOS Safari
+ * Note: iOS does not support Web Push API in PWA mode
+ */
+self.addEventListener('push', (event) => {
+  console.log('[SW] Push notification received');
+  
+  let notificationData = {
+    title: 'SAC Pilatus',
+    body: 'New notification',
+    icon: '/files/favicon/app-icon-192x192.png',
+    badge: '/files/favicon/app-icon-96x96.png',
+    tag: 'sac-pilatus-notification',
+    requireInteraction: false,
+    url: '/home.html'
+  };
+  
+  // Parse push event data if available
+  if (event.data) {
+    try {
+      const pushData = event.data.json();
+      notificationData = {
+        ...notificationData,
+        ...pushData
+      };
+      console.log('[SW] Push data:', pushData);
+    } catch (e) {
+      // If JSON parsing fails, use text as body
+      notificationData.body = event.data.text();
+      console.log('[SW] Push data (text):', event.data.text());
+    }
+  }
+  
+  event.waitUntil(
+    self.registration.showNotification(notificationData.title, {
+      body: notificationData.body,
+      icon: notificationData.icon,
+      badge: notificationData.badge,
+      tag: notificationData.tag,
+      requireInteraction: notificationData.requireInteraction,
+      data: { url: notificationData.url }
+    })
+  );
+});
+
+/**
+ * Handle notification close (Android only)
+ */
+self.addEventListener('notificationclose', (event) => {
+  console.log('[SW] Notification closed:', event.notification.tag);
 });
 
