@@ -2,7 +2,7 @@
 
 A Progressive Web App (PWA) for SAC (Schweizer Alpen-Club) Pilatus section. Optimized for **iOS**, **Android**, and **Windows** without any additional frameworks.
 
-**Version:** 0.3.0 (Updated 2024)
+**Version:** 0.3.0 (Updated 2026)
 
 ## Features
 

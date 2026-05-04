@@ -9,6 +9,10 @@
   "dir": "ltr",
   "theme_color": "#eb1e26",
   "background_color": "#ffffff",
+  "color_scheme_dark": {
+    "theme_color": "#8b0000",
+    "background_color": "#1a1a1a"
+  },
   "orientation": "portrait-primary",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "minimal-ui", "browser"],
