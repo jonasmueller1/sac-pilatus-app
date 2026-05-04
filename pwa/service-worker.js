@@ -1,14 +1,16 @@
 /*
  Copyright 2023 Jonas Mueller (SAC Section Pilatus). All Rights Reserved.
+ Updated 2024 with improved cache strategies for iOS, Android, and Windows.
  */
 
-const cacheName = 'app-version-0.2.2'; // A change forces an update of its cached files
+const CACHE_VERSION = '0.3.0';
+const CACHE_NAME = `sac-pilatus-app-v${CACHE_VERSION}`;
+const OFFLINE_PAGE = '/home.html';
 
-// Local URIs we always want to be cached (links must be always valid)
-const contentToCache = [
-  // Basic app content:
+// Static assets to cache on install
+const STATIC_ASSETS = [
   '/app.js',
-  // App images:
+  '/service-worker.js',
   '/files/favicon/app-icon-512x512.png',
   '/files/favicon/app-icon-192x192.png',
   '/files/favicon/app-icon-144x144.png',
@@ -17,130 +19,318 @@ const contentToCache = [
   '/files/favicon/app-icon-48x48.png',
   '/files/favicon/app-icon-32x32.png',
   '/files/favicon/app-icon-16x16.png',
-  // Website images:
-  '/favicon.ico',
-  '/files/favicon/favicon-196x196.png',
-  '/files/favicon/favicon-96x96.png',
-  '/files/favicon/favicon-32x32.png',
-  '/files/favicon/favicon-16x16.png',
-  '/files/favicon/favicon-128.png',
-  '/files/theme-sac-pilatus/images/logos/logo-header.svg',
-  // Big images (with hash in file name) to optimize bandwidth:
-  '/assets/images/6/Urbachtal-ea756110.jpg',
-  '/assets/images/f/Galtigengrat-528b6ec6.jpg',
-  '/assets/images/6/005-81a10e4c.jpg',
-  // No explicit caching of pages to enforce up-to-date content:
-  // '/home.html',  
-  // './',
+  '/favicon.ico'
 ];
 
-// Installing Service Worker
-self.addEventListener('install', (e) => {
-  console.log('[Service Worker] Install');
-  e.waitUntil((async () => {
-    const cache = await caches.open(cacheName);
-    console.log('[Service Worker] Caching all: app content');
-    try {
-      await cache.addAll(contentToCache);
-    } catch(e) {
-      console.warning('[Service Worker] Error: App content failed to cache!');
-    }
-  })());
+/**
+ * Service Worker: Install Event
+ * Cache static assets on installation
+ */
+self.addEventListener('install', (event) => {
+  console.log('[SW] Installing service worker v' + CACHE_VERSION);
+  
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('[SW] Caching static assets');
+      return cache.addAll(STATIC_ASSETS).catch((error) => {
+        console.warn('[SW] Error caching some assets (may not exist yet):', error.message);
+        // Continue even if some assets don't exist
+        return Promise.resolve();
+      });
+    })
+  );
+  
+  // Force new service worker to activate immediately
+  self.skipWaiting();
 });
 
-// Fetching content using Service Worker
-self.addEventListener('fetch', function(event) {
-  // Skip cross-origin requests
-  //if (event.request.url.startsWith(self.location.origin)) {
-    event.respondWith(
-      caches.match(event.request)
-      .then(function(response) {
-          console.log(`[Service Worker] Fetching resource: ${event.request.url}`);
-          // Check if current http request matches cached data
-          if (response) {
-            // Return only cached content if it is defined
-            if (contentToCache.includes(event.request.url)) {
-              return response;
-            }
+/**
+ * Service Worker: Activate Event
+ * Clean up old caches
+ */
+self.addEventListener('activate', (event) => {
+  console.log('[SW] Activating service worker');
+  
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('[SW] Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
           }
-
-          console.log(`[Service Worker] Caching new resource: ${event.request.url}`);
-          var requestToCache = event.request.clone();
-
-          // Try to make original http request
-          return fetch(requestToCache).then(
-            function(response) {
-              // Return server error immediately
-              if (!response || response.status !== 200) {
-                return response;
-              }
-
-              console.log(`[Service Worker] Adding new resource: ${event.request.url}`);
-              var responseToCache = response.clone();
-              caches.open(cacheName)
-                .then(function(cache) {
-                  // Add response to cache
-                  cache.put(requestToCache, responseToCache);
-                });
-
-              return response;
-            }
-          );
-        }).catch(function(err) {
-          console.error(`[Service Worker] Error: Fetch failed for resource: ${event.request.url}`);
-          // If the network is unavailable to make a request, open cached page
-          offlinePage = caches.match(event.request.url)
-          console.log(`[Service Worker] Fetching cached resource: ${event.request.url}`);
-          return offlinePage
-          // return caches.match('/home.html');
         })
       );
-  //}
+    })
+  );
+  
+  // Take control of all clients immediately
+  self.clients.claim();
 });
 
-// Clearing cache
-self.addEventListener('activate', (e) => {
-  console.log('[Service Worker] Activate');
-  e.waitUntil(caches.keys().then((keyList) => {
-    return Promise.all(keyList.map((key) => {
-      if (key === cacheName) { return; }
-      return caches.delete(key);
-    }))
-  }));
-});
-
-// Listen the periodic background sync events to update the cached resources.
-self.addEventListener('periodicsync', event => {
-  if (event.tag === 'update-cached-content') {
-    // event.waitUntil(updateCachedContent());
+/**
+ * Service Worker: Fetch Event
+ * Implement intelligent caching strategy:
+ * - Network-first for HTML pages and API calls
+ * - Cache-first for images and assets
+ * - Stale-while-revalidate for non-critical assets
+ */
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+  
+  // Skip cross-origin requests and chrome extensions
+  if (!url.origin.includes(self.location.origin)) {
+    return;
+  }
+  
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') {
+    return;
+  }
+  
+  // Determine cache strategy based on request type
+  if (isHTMLPage(event.request)) {
+    // Network-first for HTML pages
+    event.respondWith(networkFirstStrategy(event.request));
+  } else if (isImage(event.request) || isFont(event.request)) {
+    // Cache-first for images and fonts
+    event.respondWith(cacheFirstStrategy(event.request));
+  } else if (isAPI(event.request)) {
+    // Network-first for API calls with timeout
+    event.respondWith(networkFirstWithTimeoutStrategy(event.request));
+  } else {
+    // Stale-while-revalidate for other assets
+    event.respondWith(staleWhileRevalidateStrategy(event.request));
   }
 });
 
-// Skip waiting for updating it
+/**
+ * Network-first strategy
+ * Try network first, fall back to cache, then offline page
+ */
+function networkFirstStrategy(request) {
+  return fetch(request)
+    .then((response) => {
+      // Check if response is valid
+      if (!response || response.status !== 200 || response.type === 'error') {
+        return response;
+      }
+      
+      // Clone and cache the response
+      const responseClone = response.clone();
+      caches.open(CACHE_NAME).then((cache) => {
+        cache.put(request, responseClone);
+      });
+      
+      return response;
+    })
+    .catch((error) => {
+      console.log('[SW] Network request failed for:', request.url, error.message);
+      // Try to return from cache
+      return caches.match(request).then((cached) => {
+        if (cached) {
+          return cached;
+        }
+        // Return offline page if both network and cache fail
+        return caches.match(OFFLINE_PAGE);
+      });
+    });
+}
+
+/**
+ * Cache-first strategy
+ * Try cache first, fall back to network
+ */
+function cacheFirstStrategy(request) {
+  return caches.match(request).then((cached) => {
+    if (cached) {
+      return cached;
+    }
+    
+    return fetch(request)
+      .then((response) => {
+        // Don't cache invalid responses
+        if (!response || response.status !== 200) {
+          return response;
+        }
+        
+        // Clone and cache the response
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(request, responseClone);
+        });
+        
+        return response;
+      })
+      .catch((error) => {
+        console.log('[SW] Failed to fetch:', request.url, error.message);
+        return caches.match(request);
+      });
+  });
+}
+
+/**
+ * Network-first with timeout strategy
+ * Try network with timeout, fall back to cache for API calls
+ */
+function networkFirstWithTimeoutStrategy(request) {
+  return Promise.race([
+    fetch(request),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Request timeout')), 5000)
+    )
+  ])
+    .then((response) => {
+      if (!response || response.status !== 200) {
+        return response;
+      }
+      
+      const responseClone = response.clone();
+      caches.open(CACHE_NAME).then((cache) => {
+        cache.put(request, responseClone);
+      });
+      
+      return response;
+    })
+    .catch((error) => {
+      console.log('[SW] Network timeout or error for:', request.url);
+      return caches.match(request);
+    });
+}
+
+/**
+ * Stale-while-revalidate strategy
+ * Return cached version immediately while fetching new version in background
+ */
+function staleWhileRevalidateStrategy(request) {
+  return caches.match(request).then((cached) => {
+    // Return cached version immediately
+    const fetchPromise = fetch(request).then((response) => {
+      if (!response || response.status !== 200) {
+        return response;
+      }
+      
+      // Update cache in background
+      const responseClone = response.clone();
+      caches.open(CACHE_NAME).then((cache) => {
+        cache.put(request, responseClone);
+      });
+      
+      return response;
+    });
+    
+    // Return cached or fetch in parallel
+    return cached || fetchPromise;
+  });
+}
+
+/**
+ * Check if request is for an HTML page
+ */
+function isHTMLPage(request) {
+  return request.headers.get('accept')?.includes('text/html') ||
+         request.url.endsWith('.html') ||
+         request.url.endsWith('/');
+}
+
+/**
+ * Check if request is for an image
+ */
+function isImage(request) {
+  return request.headers.get('accept')?.includes('image/') ||
+         /\.(png|jpg|jpeg|gif|svg|webp)$/i.test(request.url);
+}
+
+/**
+ * Check if request is for a font
+ */
+function isFont(request) {
+  return /\.(woff|woff2|ttf|eot|otf)$/i.test(request.url);
+}
+
+/**
+ * Check if request is for an API call
+ */
+function isAPI(request) {
+  return request.url.includes('/api/') || 
+         request.url.includes('/service/');
+}
+
+/**
+ * Handle messages from clients (e.g., SKIP_WAITING)
+ */
 self.addEventListener('message', (event) => {
-  console.log('[Service Worker] Message: ', event.data);
-  if (event.data === 'SKIP_WAITING') {
+  console.log('[SW] Received message:', event.data);
+  
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    console.log('[SW] SKIP_WAITING received, activating immediately');
     self.skipWaiting();
   }
 });
 
-// Notification data
-self.addEventListener('notificationclick', function(event) {
-  console.log('[Service Worker] Notification click: ', event.notification.data);
+/**
+ * Periodic background sync (experimental)
+ * Used for updating cached content in the background
+ */
+self.addEventListener('periodicsync', (event) => {
+  console.log('[SW] Periodic sync:', event.tag);
+  
+  if (event.tag === 'update-content') {
+    event.waitUntil(
+      updateCachedContent()
+    );
+  }
+});
+
+/**
+ * Update cached content in background
+ */
+function updateCachedContent() {
+  return caches.open(CACHE_NAME).then((cache) => {
+    // Add URLs you want to periodically update
+    const urlsToUpdate = [
+      '/home.html',
+      '/api/content'
+    ];
+    
+    return Promise.all(
+      urlsToUpdate.map((url) => {
+        return fetch(url)
+          .then((response) => {
+            if (response && response.status === 200) {
+              cache.put(url, response.clone());
+            }
+          })
+          .catch((error) => {
+            console.log('[SW] Periodic sync error for:', url, error.message);
+          });
+      })
+    );
+  });
+}
+
+/**
+ * Handle notification clicks
+ */
+self.addEventListener('notificationclick', (event) => {
+  console.log('[SW] Notification clicked:', event.notification.data);
   const nUrl = event.notification.data.url;
   event.notification.close();
-  // Open the app and navigate to url after clicking the notification
+  
+  // Open the app and navigate to URL after clicking notification
   if (clients.openWindow && nUrl) {
-    // Enumerate windows, and call window.focus(), or open a new one.
     event.waitUntil(
-      clients.matchAll().then(matchedClients => {
+      clients.matchAll().then((matchedClients) => {
+        // Check if window is already open
         for (let client of matchedClients) {
           if (client.url === nUrl) {
             return client.focus();
           }
         }
+        // Open new window if not found
         return clients.openWindow(nUrl);
       })
     );
   }
 });
+
