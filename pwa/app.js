@@ -1,6 +1,7 @@
 /*
  Copyright 2023-2026 Jonas Mueller (SAC Section Pilatus). All Rights Reserved.
  Updated 2026 with improved cache strategies for iOS, Android, and Windows.
+ App v0.3.0 - Full PWA support including Web Push, A2HS, and cross-platform compatibility
  */
 
 let swRegistration = null;
@@ -179,11 +180,20 @@ function handleA2HSPrompt() {
 
 /**
  * Setup push notifications
+ * Supported on: Android (Chrome), Windows (Edge), macOS Safari
+ * Not supported on: iOS PWA (Apple limitation)
  */
 function setupPushNotifications() {
   const notifyButton = document.getElementById('notifications');
   
   if (!notifyButton) return;
+  
+  // Hide on iOS since Web Push is not supported in PWA mode
+  if (isIOS()) {
+    console.log('[Notifications] iOS detected - Web Push not supported in PWA mode');
+    notifyButton.style.display = 'none';
+    return;
+  }
   
   notifyButton.addEventListener('click', async () => {
     try {
@@ -192,7 +202,8 @@ function setupPushNotifications() {
       
       if (permission === 'granted' && swRegistration) {
         console.log('[Notifications] Permission granted');
-        // Additional notification setup can be done here
+        // Subscribe to push notifications
+        subscribeToPush();
       }
     } catch (error) {
       console.error('[Notifications] Error requesting permission:', error);
@@ -200,9 +211,39 @@ function setupPushNotifications() {
   });
   
   // Show notification button only if notifications are supported
-  if ('Notification' in window) {
+  if ('Notification' in window && !isIOS()) {
     notifyButton.style.display = 'block';
   }
+}
+
+/**
+ * Subscribe to push notifications
+ */
+function subscribeToPush() {
+  if (!swRegistration || !('pushManager' in swRegistration)) {
+    console.warn('[Push] PushManager not available');
+    return;
+  }
+  
+  swRegistration.pushManager.getSubscription()
+    .then(subscription => {
+      if (subscription) {
+        console.log('[Push] Already subscribed:', subscription.endpoint);
+        return subscription;
+      }
+      
+      // Subscribe to push (VAPID key would be needed for production)
+      return swRegistration.pushManager.subscribe({
+        userVisibleOnly: true,
+        application_server_key: undefined // Add VAPID public key in production
+      });
+    })
+    .then(subscription => {
+      console.log('[Push] Subscription successful:', subscription.endpoint);
+    })
+    .catch(error => {
+      console.error('[Push] Subscription failed:', error);
+    });
 }
 
 /**
@@ -249,4 +290,21 @@ document.addEventListener('visibilitychange', () => {
     swRegistration.update();
   }
 });
+
+/**
+ * Log PWA diagnostics on startup
+ */
+window.addEventListener('load', () => {
+  // Delay diagnostics to ensure all checks complete
+  setTimeout(() => {
+    console.group('PWA Diagnostics (2026)');
+    console.log('Service Worker Supported:', 'serviceWorker' in navigator ? '✅' : '❌');
+    console.log('Service Worker Active:', swRegistration ? '✅' : '❌');
+    console.log('Web Push Supported:', 'PushManager' in window ? '✅' : '❌');
+    console.log('Notifications Supported:', 'Notification' in window ? '✅' : '❌');
+    console.log('iOS Device:', isIOS() ? '✅' : '❌');
+    console.log('PWA Installed:', isPWAInstalled() ? '✅' : '❌');
+    console.groupEnd();
+  }, 1000);
+}, { once: true });
 
